@@ -135,8 +135,8 @@ h1 {
 }
 
 .player.qualified {
-    border: 2px solid green;
-    background-color: green;
+    border: 2px solid #6BAC46;
+    background-color: #6BAC46;
     color: white;
 }
 
