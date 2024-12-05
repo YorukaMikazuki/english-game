@@ -97,19 +97,29 @@
                     player.classList.remove('qualified', 'eliminated');
                 }
             });
+
+            // Si un seul joueur reste après le reset, annoncer le vainqueur
+            const remainingPlayers = document.querySelectorAll('.player');
+            if (remainingPlayers.length === 1) {
+                setTimeout(() => {
+                    alert(`The winner is ${remainingPlayers[0].querySelector('input').value}! Congratulations!`);
+                }, 100);
+            }
         }
 
         function checkQualification(playerElement, scoreElement, increase = true) {
             const currentScore = parseInt(scoreElement.textContent);
             const qualifiedPlayers = document.querySelectorAll('.player.qualified').length;
+            const totalPlayers = document.querySelectorAll('.player').length;
 
             if (currentScore === MAX_SCORE && increase) {
                 scoreElement.textContent = 'Qualified';
                 scoreElement.classList.add('qualified');
                 playerElement.classList.add('qualified');
 
-                if (qualifiedPlayers + 1 === 3) {
-                    markEliminated();
+                // Si le nombre de qualifiés atteint totalPlayers - 1, éliminer le joueur restant
+                if (qualifiedPlayers + 1 === totalPlayers - 1) {
+                    eliminateRemainingPlayer();
                 }
             } else if (currentScore < MAX_SCORE) {
                 scoreElement.classList.remove('qualified');
@@ -117,27 +127,26 @@
             }
         }
 
-        function markEliminated() {
-            const players = document.querySelectorAll('.player');
-            let alertTriggered = false;
+        function eliminateRemainingPlayer() {
+            const players = document.querySelectorAll('.player:not(.qualified):not(.eliminated)');
+            const playerContainer = document.getElementById('playerContainer');
 
-            players.forEach(player => {
-                if (!player.classList.contains('qualified') && !player.classList.contains('eliminated')) {
-                    const scoreElement = player.querySelector('.score');
-                    scoreElement.textContent = 'Eliminated';
-                    player.classList.add('eliminated');
+            if (players.length === 1) {
+                const playerToEliminate = players[0];
+                const scoreElement = playerToEliminate.querySelector('.score');
+                scoreElement.textContent = 'Eliminated';
+                playerToEliminate.classList.add('eliminated');
 
-                    // Déclencher l'alerte une fois qu'un joueur est marqué comme éliminé
-                    if (!alertTriggered) {
-                        setTimeout(() => {
-                            alert("End of the first round. Reset scores to access the next one (medium difficulty deck).");
-                        }, 100); // Laisser le temps au DOM de se mettre à jour avant l'alerte
-                        alertTriggered = true;
+                setTimeout(() => {
+                    alert(`${playerToEliminate.querySelector('input').value} has been eliminated. Reset scores to access the next round.`);
+                    playerContainer.removeChild(playerToEliminate);
+
+                    // Si un seul joueur reste après élimination, annoncer le vainqueur
+                    const remainingPlayers = document.querySelectorAll('.player');
+                    if (remainingPlayers.length === 1) {
+                        alert(`The winner is ${remainingPlayers[0].querySelector('input').value}! Congratulations!`);
                     }
-                }
-            });
+                }, 100); // Laisser le temps au DOM de se mettre à jour avant l'alerte
+            }
         }
     </script>
-</body>
-
-</html>

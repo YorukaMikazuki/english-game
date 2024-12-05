@@ -17,8 +17,13 @@ body {
 }
 
 h1 {
+    padding: 10px 15px;
+    border-radius: 5px;
     margin-top: 20px;
-    color: black;
+    margin-top: 20px;
+    color: #f3f3f3;
+    background-color: #100f0f;
+    border: none;
 }
 
 .container {
