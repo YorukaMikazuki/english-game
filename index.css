@@ -18,11 +18,27 @@ body {
     /* Centre horizontalement et verticalement */
     height: 100vh;
     /* Prend toute la hauteur de la fenêtre */
-    background-image: url(logo\ 1.png);
+
+    background-image: url('logo 1.png');
+    /* Assurez-vous que le chemin est correct */
     background-size: cover;
+    /* Adapte l'image à la taille de l'écran tout en conservant ses proportions */
     background-position: center;
+    /* Centre l'image */
     background-repeat: no-repeat;
+    /* Empêche la répétition de l'image */
     background-attachment: fixed;
+    /* L'image reste fixe lors du défilement */
+}
+
+/* Ajustements pour petits écrans */
+@media (max-width: 768px) {
+    body {
+        background-size: contain;
+        /* Ajuste l'image pour qu'elle soit entièrement visible */
+        background-attachment: scroll;
+        /* Permet de scroller si l'image est trop grande */
+    }
 }
 
 h1 {
