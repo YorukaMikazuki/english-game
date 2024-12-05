@@ -52,8 +52,10 @@
 
     <script>
         // Afficher une alerte de bienvenue au chargement de la page
+        let roundNumber = 1;
+
         window.onload = function () {
-            alert("Welcome to Jungle Skill ! Prepare yourselves for the first round (easy difficulty deck).");
+            alert("Welcome to Jungle Skill! Prepare yourselves for the first round (easy difficulty deck).");
         };
 
         const MAX_SCORE = 5;
@@ -102,8 +104,14 @@
             const remainingPlayers = document.querySelectorAll('.player');
             if (remainingPlayers.length === 1) {
                 setTimeout(() => {
+                    alert(`End of round ${roundNumber}.`);
                     alert(`The winner is ${remainingPlayers[0].querySelector('input').value}! Congratulations!`);
                 }, 100);
+            } else {
+                roundNumber++;
+                if (roundNumber <= 3) {
+                    const difficulty = getDifficulty(roundNumber);
+                }
             }
         }
 
@@ -117,7 +125,6 @@
                 scoreElement.classList.add('qualified');
                 playerElement.classList.add('qualified');
 
-                // Si le nombre de qualifiés atteint totalPlayers - 1, éliminer le joueur restant
                 if (qualifiedPlayers + 1 === totalPlayers - 1) {
                     eliminateRemainingPlayer();
                 }
@@ -138,15 +145,22 @@
                 playerToEliminate.classList.add('eliminated');
 
                 setTimeout(() => {
-                    alert(`${playerToEliminate.querySelector('input').value} has been eliminated. Reset scores to access the next round.`);
                     playerContainer.removeChild(playerToEliminate);
 
-                    // Si un seul joueur reste après élimination, annoncer le vainqueur
                     const remainingPlayers = document.querySelectorAll('.player');
-                    if (remainingPlayers.length === 1) {
+                    if (remainingPlayers.length === 1 || roundNumber === 3) {
                         alert(`The winner is ${remainingPlayers[0].querySelector('input').value}! Congratulations!`);
+                    } else {
+                        const difficulty = getDifficulty(roundNumber + 1);
+                        alert(`End of round ${roundNumber}. ${playerToEliminate.querySelector('input').value} has been eliminated. Prepare for round ${roundNumber + 1} (${difficulty} difficulty deck).`);
                     }
-                }, 100); // Laisser le temps au DOM de se mettre à jour avant l'alerte
+                }, 100);
             }
+        }
+
+        function getDifficulty(round) {
+            if (round === 1) return "easy";
+            if (round === 2) return "medium";
+            return "advanced";
         }
     </script>
