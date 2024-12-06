@@ -150,6 +150,7 @@
                     const remainingPlayers = document.querySelectorAll('.player');
                     if (remainingPlayers.length === 1 || roundNumber === 3) {
                         alert(`The winner is ${remainingPlayers[0].querySelector('input').value}! Congratulations!`);
+                        alert('End of the game. Refresh the page if you want to do another one.')
                     } else {
                         const difficulty = getDifficulty(roundNumber + 1);
                         alert(`End of round ${roundNumber}. ${playerToEliminate.querySelector('input').value} has been eliminated. Prepare for round ${roundNumber + 1} (${difficulty} difficulty deck).`);
